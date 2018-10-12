@@ -1,0 +1,3 @@
+tri_platform_homepage:
+    path:     /
+    defaults: { _controller: TRIPlatformBundle:Default:index }
