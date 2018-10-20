@@ -1,4 +1,4 @@
 tri_platform:
     resource: "@TRIPlatformBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /platform
 
