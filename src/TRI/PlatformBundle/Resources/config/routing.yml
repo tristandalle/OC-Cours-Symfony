@@ -16,7 +16,7 @@ tri_platform_view:
 tri_platform_add:
     path:   /add
     defaults:
-        _controller: OCPlatformBundle:Advert:add
+        _controller: TRIPlatformBundle:Advert:add
 
 tri_platform_edit:
     path:   /edit/{id}

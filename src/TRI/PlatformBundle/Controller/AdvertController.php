@@ -5,30 +5,48 @@
 namespace TRI\PlatformBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class AdvertController extends Controller
 {
+
+    public function indexAction($page)
+    {
+        if($page < 1) {
+            throw new NotFoundHttpException('Page"'.$page.'" inexistante.');
+        }
+        return $this->render('TRIPlatformBundle:Advert:index.html.twig');
+    }
+
+
     public function viewAction($id)
     {
-        return new Response("Affichage de l'annonce d'id :".$id);
+        return $this->render('TRIPlatformBundle:Advert:view.html.twig', array('id' => $id));
     }
 
-    public function viewSlugAction($slug, $year, $_format)
+
+    public function addAction($request)
     {
-        return new Response(
-            "On pourrait afficher l'annonce correspondant au slug '".$slug."', créée en ".$year." et au format ".$_format."."
-        );
+       if($request->isMethod('POST')){
+           $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+           return $this->redirectToRoute('tri_platform_view', array('id' => 5));
+       }
+       return $this->render('TRIPlatformBundle:Advert:add.html.twig');
     }
 
-    public function indexAction()
+    public function editAction($id, Request $request)
     {
-        $url = $this->get('router')->generate(
-            'tri_platform_view',
-            array('id' => 5)
-    );
-        return new Response("L'URL de l'annonce d'id 5 est : ".$url);
+        if ($request->isMethod('POST')){
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
+            return $this->redirectToRoute('tri_platform_view', array('id' => 5));
+        }
+        return $this->render('TRIPlatformBundle:Advert:edit.html.twig');
     }
 
+    public function deleteAction($id)
+    {
+        return $this->render('TRIPlatformBundle:Advert:delete.html.twig');
+    }
 }
