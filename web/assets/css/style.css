@@ -1,0 +1,7 @@
+#menu > ul{
+    justify-content: space-between;
+}
+
+#menu{
+    background-color: red;
+}

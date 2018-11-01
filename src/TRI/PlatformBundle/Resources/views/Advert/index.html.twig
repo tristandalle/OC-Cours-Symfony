@@ -1,13 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Ma premiere page Symfony</title>
-</head>
-<body>
-    <h1>Hello {{ nom }} !!</h1>
+{% extends "TRIPlatformBundle::layout.html.twig" %}
 
-    <p>
-        Blabla bla sur le helloworld et tutticuonti
-    </p>
-</body>
-</html>
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+
+{% block triplatform_body %}
+    <h2>Liste des annonces</h2>
+
+    <ul>
+        {% for advert in listAdverts %}
+            <li>
+                <a href="{{ path('tri_platform_view', {'id': advert.id}) }}">
+                    {{ advert.title }}
+                </a>
+                par {{ advert.author }},
+                le {{ advert.date|date('d/m/Y') }}
+            </li>
+        {% else %}
+            <li>Pas (encore !) d'annonces</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

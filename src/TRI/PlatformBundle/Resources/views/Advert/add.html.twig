@@ -1,0 +1,18 @@
+{% extends "TRIPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Ajouter une annonce - {{ parent() }}
+{% endblock %}
+
+{% block triplatform_body %}
+
+    <h2>Ajouter une annonce</h2>
+
+    {{ include("TRIPlatformBundle:Advert:form.html.twig") }}
+
+    <p>
+        Attention, cette annonce sera ajouté automatiquement à la page d'accueil après validation du formulaire.
+    </p>
+
+
+{% endblock %}
