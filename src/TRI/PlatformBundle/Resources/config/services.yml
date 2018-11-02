@@ -2,3 +2,10 @@ services:
 #    tri_platform.example:
 #        class: TRI\PlatformBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    tri_platform.antispam:
+      class: TRI\PlatformBundle\Antispam\TRIAntispam
+      arguments:
+        - "@mailer"
+        - "%locale%"
+        - 50
