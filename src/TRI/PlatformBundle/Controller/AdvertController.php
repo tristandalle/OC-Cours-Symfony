@@ -7,6 +7,7 @@ namespace TRI\PlatformBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TRI\PlatformBundle\Entity\Advert;
 
 
 class AdvertController extends Controller
@@ -47,14 +48,18 @@ class AdvertController extends Controller
 
     public function viewAction($id)
     {
-        $advert = array(
-            'title' => 'Recherche développpeur Symfony2',
-            'id' => $id,
-            'author' => 'Alexandre',
-            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-            'date' => new \Datetime()
-        );
+        $repository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('TRIPlatformBundle:Advert')
+            ;
 
+        $advert = $repository->find($id);
+
+        if (null === $advert)
+        {
+            throw new NotFoundHttpException("L'annonce d'id ".$id. " n'existe pas");
+        }
+        
         return $this->render('TRIPlatformBundle:Advert:view.html.twig', array(
             'advert' => $advert
         ));
@@ -63,23 +68,25 @@ class AdvertController extends Controller
 
     public function addAction(Request $request)
     {
+        $advert = new Advert();
+        $advert->setTitle("Recherche Pere Noel");
+        $advert->setAuthor("Bobby");
+        $advert->setContent("cherche pere noel pour le 25dec");
 
-        $antispam = $this->container->get('tri_platform.antispam');
-        $text = '.sdfhqsdlfkhqsdlkjfhqslkdjf..';
-        if ($antispam->isSpam($text)) {
-            throw new \Exception('Votre message a été détecté comme étant un spam !');
-        }
+        $em = $this->getDoctrine()->getManager();
 
-        if ($request->isMethod('POST')) {
+        $em->persist($advert);
+
+        $em->flush();
+
+        if ($request->isMethod('POST'))
+        {
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
-            return $this->redirectToRoute('tri_platform_view', array(
-                'id' => 5
-            ));
+            return $this->redirectToRoute('tri_platform_view', array('id' => $advert->getId()));
         }
 
-        return $this->render('TRIPlatformBundle:Advert:add.html.twig');
-
+        return $this->render('TRIPlatformBundle:Advert:add.html.twig', array('advert' => $advert));
     }
 
     public function editAction($id, Request $request)
