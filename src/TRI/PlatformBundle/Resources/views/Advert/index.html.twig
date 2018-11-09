@@ -7,9 +7,9 @@
 {% block triplatform_body %}
     <h2>Liste des annonces</h2>
 
-    <ul>
+    <ul class="list-group list-group-flush">
         {% for advert in listAdverts %}
-            <li>
+            <li class="list-group-item">
                 <a href="{{ path('tri_platform_view', {'id': advert.id}) }}">
                     {{ advert.title }}
                 </a>

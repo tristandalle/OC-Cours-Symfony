@@ -1,0 +1,4 @@
+services:
+#    tri_core.example:
+#        class: TRI\CoreBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -1,0 +1,9 @@
+tri_core_homepage:
+    path:    /
+    defaults:
+        _controller: TRICoreBundle:Core:index
+
+tri_core_contact:
+    path:    /contact
+    defaults:
+        _controller: TRICoreBundle:Core:contact

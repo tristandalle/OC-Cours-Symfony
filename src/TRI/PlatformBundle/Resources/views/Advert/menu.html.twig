@@ -1,6 +1,6 @@
-<ul class="nav nav-pills nav-stacked">
+<ul class="list-group">
     {% for advert in listAdverts %}
-    <li>
+    <li class="list-group-item">
         <a href="{{ path('tri_platform_view', {'id': advert.id}) }}">
             {{ advert.title }}
         </a>

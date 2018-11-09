@@ -1,3 +1,7 @@
+tri_core:
+    resource: "@TRICoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
 tri_platform:
     resource: "@TRIPlatformBundle/Resources/config/routing.yml"
     prefix:   /platform
