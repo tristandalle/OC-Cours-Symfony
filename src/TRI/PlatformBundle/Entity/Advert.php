@@ -2,16 +2,35 @@
 
 namespace TRI\PlatformBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Advert
- *
  * @ORM\Table(name="advert")
  * @ORM\Entity(repositoryClass="TRI\PlatformBundle\Repository\AdvertRepository")
  */
+
 class Advert
 {
+
+    /**
+     * @ORM\OneToMany(targetEntity="TRI\PlatformBundle\Entity\Application", mappedBy="advert")
+     */
+    private $applications; // Notez le « s », une annonce est liée à plusieurs candidatures
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="TRI\PlatformBundle\Entity\Category", cascade={"persist"})
+     * @ORM\JoinTable(name="tri_advert_category")
+     */
+    private $categories;
+
+    /**
+     * @ORM\OneToOne(targetEntity="TRI\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $image;
+
     /**
      * @var int
      *
@@ -57,6 +76,8 @@ class Advert
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->categories = new ArrayCollection();
+        $this->applications = new ArrayCollection();
     }
 
     /**
@@ -187,5 +208,101 @@ class Advert
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \TRI\PlatformBundle\Entity\Image $image
+     *
+     * @return Advert
+     */
+    public function setImage(\TRI\PlatformBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \TRI\PlatformBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Add category
+     *
+     * @param Category $category
+     *
+     * @return Advert
+     */
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Add application.
+     *
+     * @param \TRI\PlatformBundle\Entity\Application $application
+     *
+     * @return Advert
+     */
+    public function addApplication(\TRI\PlatformBundle\Entity\Application $application)
+    {
+        $this->applications[] = $application;
+
+        $application->setAdvert($this):
+
+        return $this;
+    }
+
+    /**
+     * Remove application.
+     *
+     * @param \TRI\PlatformBundle\Entity\Application $application
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeApplication(\TRI\PlatformBundle\Entity\Application $application)
+    {
+        return $this->applications->removeElement($application);
+    }
+
+    /**
+     * Get applications.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApplications()
+    {
+        return $this->applications;
     }
 }
